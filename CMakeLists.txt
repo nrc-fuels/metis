@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project(METIS)
+project(METIS
+  LANGUAGES C)
 
 set(GKLIB_PATH "${CMAKE_CURRENT_LIST_DIR}/GKlib" CACHE PATH "path to GKlib")
 set(BUILD_SHARED_LIBS FALSE CACHE BOOL "build a shared library")
@@ -17,9 +18,17 @@ else()
   set(METIS_LIBRARY_TYPE STATIC)
 endif()
 
+include(CheckInclude_File)
+CHECK_INCLUDE_FILE(math.h HAVE_MATH_H)
+if(${HAVE_MATH_H})
+  set(MATH_H_LOC ${HAVE_MATH_H})
+else()
+  set(MATH_H_LOC math.h)
+endif()
 include(CheckSymbolExists)
-check_symbol_exists(rint math.h HAVE_RINT)
-if (HAVE_RINT)
+check_symbol_exists(rint ${MATH_H_LOC} HAVE_RINT)
+message(STATUS "Have rint? ${HAVE_RINT}")
+if (${HAVE_RINT})
 	add_definitions(-DHAVE_RINT)
 endif()
 
