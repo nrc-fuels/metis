@@ -18,7 +18,7 @@ else()
   set(METIS_LIBRARY_TYPE STATIC)
 endif()
 
-include(CheckInclude_File)
+include(CheckIncludeFile)
 CHECK_INCLUDE_FILE(math.h HAVE_MATH_H)
 if(${HAVE_MATH_H})
   set(MATH_H_LOC ${HAVE_MATH_H})
