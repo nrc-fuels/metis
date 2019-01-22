@@ -18,20 +18,21 @@ else()
   set(METIS_LIBRARY_TYPE STATIC)
 endif()
 
-add_definitions(-DHAVE_RINT)
-# include(CheckIncludeFile)
-# CHECK_INCLUDE_FILE(math.h HAVE_MATH_H)
-# if(${HAVE_MATH_H})
-#   set(MATH_H_LOC ${HAVE_MATH_H})
-# else()
-#   set(MATH_H_LOC math.h)
-# endif()
-# include(CheckSymbolExists)
-# check_symbol_exists(rint ${MATH_H_LOC} HAVE_RINT)
-# message(STATUS "Have rint? ${HAVE_RINT}")
-# if (${HAVE_RINT})
-# 	add_definitions(-DHAVE_RINT)
-# endif()
+include(CheckIncludeFile)
+CHECK_INCLUDE_FILE(math.h HAVE_MATH_H)
+if(HAVE_MATH_H)
+  set(INCLUDE_LINE "#include <math.h>")
+endif()
+include(CheckCSourceCompiles)
+check_c_source_compiles(
+  "
+${INCLUDE_LINE}
+int main(void){int a; a = rint(11.5); return 0;};
+"
+  RINT_COMPILES)
+if(RINT_COMPILES)
+  add_definitions(-DHAVE_RINT)
+endif()
 
 include(${GKLIB_PATH}/GKlibSystem.cmake)
 # Add include directories.
