@@ -32,7 +32,7 @@ int main(void){int a; a = rint(11.5); return 0;};
   RINT_COMPILES)
 # rint() is never actually used. Introspection fails on Linux but hard
 # override this for now.
-if(RINT_COMPILES OR LINUX)
+if(RINT_COMPILES OR (${CMAKE_HOST_SYSTEM_NAME} MATCHES Linux))
   add_definitions(-DHAVE_RINT)
 endif()
 
