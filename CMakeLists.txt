@@ -30,7 +30,9 @@ ${INCLUDE_LINE}
 int main(void){int a; a = rint(11.5); return 0;};
 "
   RINT_COMPILES)
-if(RINT_COMPILES)
+# rint() is never actually used. Introspection fails on Linux but hard
+# override this for now.
+if(RINT_COMPILES OR LINUX)
   add_definitions(-DHAVE_RINT)
 endif()
 
